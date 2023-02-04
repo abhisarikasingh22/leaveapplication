@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="flex-container" fxLayout="column">
+      <div>
+        <h1 mat-dialog-title>Add Leave</h1>
+      </div>
+      <div mat-dialog-content>
+        <form [formGroup]="leaveForm">
+          <div  fxLayout="row" fxLayoutGap="30px">
+            <mat-form-field appearance="fill">
+              <mat-label>Applicant</mat-label>
+              <mat-select formControlName="applicantId">
+                <mat-option [value]="item.id" *ngFor="let item of empList">{{item.name}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="leaveForm.controls['applicantId'].hasError('required')">This field is required.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Manager</mat-label>
+              <mat-select formControlName="managerId">
+                <mat-option [value]="item.id" *ngFor="let item of empList">{{item.name}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="leaveForm.controls['managerId'].hasError('required')">This field is required.</mat-error>
+              <mat-error *ngIf="leaveForm.controls['managerId'].hasError('invalidManagerId')"> Manager and Applicant can't be same.</mat-error>
+            </mat-form-field>
+          </div>
+          <div  fxLayout="row" fxLayoutGap="30px">
+            <mat-form-field color="accent" appearance="fill">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" (dateChange)="noOfDays()" readonly>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startDatePicker touchUi color="primary"></mat-datepicker>
+              <mat-error *ngIf="leaveForm.controls['startDate'].hasError('required')">This field is required.</mat-error>
+            </mat-form-field>
+            <mat-form-field color="accent" appearance="fill">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" (dateChange)="noOfDays()" readonly>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #endDatePicker touchUi color="primary"></mat-datepicker>
+              <mat-error *ngIf="leaveForm.controls['endDate'].hasError('invalidDateRange')">Start date is not before the end date</mat-error>
+            </mat-form-field>
+          </div>
+          <div  fxLayout="row" fxLayoutGap="30px">
+            <mat-form-field color="accent" appearance="fill">
+              <mat-label>Return Date</mat-label>
+              <input matInput [matDatepicker]="returnDatePicker" formControlName="returnDate" readonly>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="returnDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #returnDatePicker touchUi color="primary"></mat-datepicker>
+              <mat-error *ngIf="leaveForm.controls['returnDate'].hasError('invalidDateRange')"> End date is not before the return date</mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Number of Days</mat-label>
+              <input matInput formControlName="numberOfDays" readonly>
+            </mat-form-field>
+          </div>
+          <div  fxLayout="row" fxLayoutGap="30px">
+            <mat-form-field class="example-full-width">
+              <mat-label>Comments</mat-label>
+              <textarea matInput formControlName="comments" maxlength="500"></textarea>
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+      <div mat-dialog-actions fxLayoutAlign="center center">
+        <button mat-stroked-button mat-dialog-close color="primary" [disabled]="leaveForm.invalid" (click)="submit()">Submit</button>
+        <button mat-stroked-button mat-dialog-close color="primary">Close</button>
+      </div>
+    </div>
+  </div>
